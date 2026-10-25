@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Food Delivery - Sign Up</title>
+<link rel="stylesheet" href="style.css">
+<script>
+function nameValidate()
+{
+    let name=document.f1.name.value;
+    let re=/^[A-Za-z ]+$/;
+
+    if(!re.test(name) || name.length<3)
+        document.getElementById("nmsg").innerHTML="Enter a valid name";
+    else
+        document.getElementById("nmsg").innerHTML="";
+}
+function dobValidate()
+{
+    if(document.f1.dob.value=="")
+        document.getElementById("dmsg").innerHTML="Select Date of Birth";
+    else
+        document.getElementById("dmsg").innerHTML="";
+}
+function genderValidate()
+{
+    if(document.f1.gender.value=="")
+        document.getElementById("gmsg").innerHTML="Select Gender";
+    else
+        document.getElementById("gmsg").innerHTML="";
+}
+function addressValidate()
+{
+    if(document.f1.address.value.length<10)
+        document.getElementById("amsg").innerHTML="Enter complete address";
+    else
+        document.getElementById("amsg").innerHTML="";
+}
+function emailValidate()
+{
+    let e=document.f1.email.value;
+
+    let at=e.indexOf("@");
+    let dot=e.lastIndexOf(".");
+
+    if(at<1 || dot<at+2 || dot+2>=e.length)
+        document.getElementById("emsg").innerHTML="Invalid Email";
+    else
+        document.getElementById("emsg").innerHTML="";
+}
+function mobileValidate()
+{
+    let m=document.f1.mobile.value;
+    let re=/^[6-9][0-9]{9}$/;
+    if(!re.test(m))
+        document.getElementById("mmsg").innerHTML="Invalid Mobile Number";
+    else
+        document.getElementById("mmsg").innerHTML="";
+}
+function passwordValidate()
+{
+    let p=document.f1.pwd.value;
+
+    if(p.length<6)
+        document.getElementById("pmsg").innerHTML="Password must contain at least 6 characters";
+    else
+        document.getElementById("pmsg").innerHTML="";
+}
+function confirmPasswordValidate()
+{
+    if(document.f1.cpwd.value!=document.f1.pwd.value)
+        document.getElementById("cpmsg").innerHTML="Passwords do not match";
+    else
+        document.getElementById("cpmsg").innerHTML="";
+}
+function validate()
+{
+    nameValidate();
+    dobValidate();
+    genderValidate();
+    addressValidate();
+    emailValidate();
+    mobileValidate();
+    passwordValidate();
+    confirmPasswordValidate();
+    if(
+    document.getElementById("nmsg").innerHTML!="" ||
+    document.getElementById("dmsg").innerHTML!="" ||
+    document.getElementById("gmsg").innerHTML!="" ||
+    document.getElementById("amsg").innerHTML!="" ||
+    document.getElementById("emsg").innerHTML!="" ||
+    document.getElementById("mmsg").innerHTML!="" ||
+    document.getElementById("pmsg").innerHTML!="" ||
+    document.getElementById("cpmsg").innerHTML!="")
+    {
+        alert("Please enter valid details.");
+        return false;
+    }
+    alert("Registration Successful!");
+    window.location="index.html";
+}
+</script>
+</head>
+<body>
+<header class="header">
+<div class="logo">
+<h1>Food Delivery</h1>
+</div>
+</header>
+<div class="signup">
+<h2 align="center">Sign Up</h2>
+<form name="f1">
+<table>
+<tr>
+<td>Name</td>
+<td>
+<input type="text" name="name" onblur="nameValidate()">
+<br><span id="nmsg"></span>
+</td>
+</tr>
+<tr>
+<td>Date of Birth</td>
+<td>
+<input type="date" name="dob" onblur="dobValidate()">
+<br><span id="dmsg"></span>
+</td>
+</tr>
+<tr>
+<td>Gender</td>
+<td>
+<select name="gender" onblur="genderValidate()">
+<option value="">Select Gender</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+<br><span id="gmsg"></span>
+</td>
+</tr>
+<tr>
+<td>Postal Address</td>
+<td>
+<textarea name="address" rows="3" cols="22" onblur="addressValidate()"></textarea>
+<br><span id="amsg"></span>
+</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>
+<input type="text" name="email" onblur="emailValidate()">
+<br><span id="emsg"></span>
+</td>
+</tr>
+<tr>
+<td>Phone Number</td>
+<td>
+<input type="text" name="mobile" maxlength="10" onblur="mobileValidate()">
+<br><span id="mmsg"></span>
+</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>
+<input type="password" name="pwd" onblur="passwordValidate()">
+<br><span id="pmsg"></span>
+</td>
+</tr>
+<tr>
+<td>Confirm Password</td>
+<td>
+<input type="password" name="cpwd" onblur="confirmPasswordValidate()">
+<br><span id="cpmsg"></span>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<button type="button" onclick="validate()">
+Register
+</button>
+<input type="reset" value="Reset">
+</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<a href="index.html">← Back to Home</a>
+</td>
+</tr>
+</table>
+</form>
+</div>
+</body>
+</html>

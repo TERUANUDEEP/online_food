@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Food Delivery</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <style>
+
+.menu-layout
+{
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 15px;
+
+    width: 100%;
+
+    align-items: start;
+}
+
+
+.food-section
+{
+    grid-column: 1 / span 3;
+
+    min-width: 0;
+}
+
+
+.food-grid
+{
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+
+    width: 100%;
+}
+
+
+.item
+{
+    padding: 12px;
+
+    box-sizing: border-box;
+
+    min-width: 0;
+}
+
+
+.item img
+{
+    width: 100%;
+
+    height: 135px;
+
+    object-fit: cover;
+}
+
+
+.item h3
+{
+    margin: 8px 0 5px;
+}
+
+
+.item p
+{
+    margin: 5px 0;
+}
+
+
+.item button
+{
+    width: 100%;
+
+    padding: 8px;
+
+    margin-top: 5px;
+
+    cursor: pointer;
+}
+
+
+.bill
+{
+    display: none;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 15px;
+
+    margin: 0;
+
+    position: sticky;
+
+    top: 20px;
+
+    min-height: 260px;
+}
+
+
+.bill.show
+{
+    display: block;
+}
+
+
+.cart-item
+{
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin: 8px 0;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid #ddd;
+}
+
+
+.food-name
+{
+    flex: 1;
+
+    font-weight: bold;
+
+    font-size: 14px;
+}
+
+
+.food-price
+{
+    font-size: 14px;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+.cart-item button
+{
+    width: 28px;
+
+    height: 28px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 4px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.cart-item button:hover
+{
+    transform: scale(1.05);
+}
+
+
+@media (max-width: 1100px)
+{
+    .menu-layout
+    {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .food-section
+    {
+        grid-column: 1 / span 2;
+    }
+
+
+    .food-grid
+    {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .bill
+    {
+        grid-column: 1 / span 2;
+
+        position: static;
+    }
+}
+
+
+@media (max-width: 600px)
+{
+    .menu-layout
+    {
+        grid-template-columns: 1fr;
+    }
+
+
+    .food-section
+    {
+        grid-column: 1;
+    }
+
+
+    .food-grid
+    {
+        grid-template-columns: 1fr;
+    }
+
+
+    .bill
+    {
+        grid-column: 1;
+    }
+}
+
+</style>
+
+    <script>
+
+        let cart = [];
+
+        const API_URL = "/api/foods";
+
+
+        function buyItem(id)
+        {
+            const existingItem =
+                cart.find(item => item.id === id);
+
+
+            if(existingItem)
+            {
+                existingItem.quantity++;
+
+                displayCart();
+
+                return;
+            }
+
+
+            fetch(`${API_URL}/${id}`)
+
+                .then(response => response.json())
+
+                .then(food => {
+
+                    cart.push({
+
+                        id: food.id,
+
+                        name: food.name,
+
+                        price: food.price,
+
+                        quantity: 1
+
+                    });
+
+
+                    displayCart();
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    alert(
+                        "Unable to add food item."
+                    );
+
+                });
+        }
+
+
+        function increaseQuantity(id)
+        {
+            const item =
+                cart.find(item => item.id === id);
+
+
+            if(item)
+            {
+                item.quantity++;
+            }
+
+
+            displayCart();
+        }
+
+
+        function decreaseQuantity(id)
+        {
+            const item =
+                cart.find(item => item.id === id);
+
+
+            if(!item)
+            {
+                return;
+            }
+
+
+            item.quantity--;
+
+
+            if(item.quantity <= 0)
+            {
+                cart =
+                    cart.filter(
+                        item => item.id !== id
+                    );
+            }
+
+
+            displayCart();
+        }
+
+
+        function displayCart()
+        {
+            const order =
+                document.getElementById("order");
+
+            const bill =
+                document.getElementById("cart");
+
+
+            if(cart.length === 0)
+            {
+                order.innerHTML = "No Items";
+
+                document.getElementById("total").innerHTML =
+                    "Total : ₹0";
+
+                bill.classList.remove("show");
+
+                return;
+            }
+
+
+            bill.classList.add("show");
+
+
+            let subtotal = 0;
+
+            let orderHTML = "";
+
+
+            cart.forEach(item => {
+
+                const itemTotal =
+                    item.price * item.quantity;
+
+
+                subtotal += itemTotal;
+
+
+                orderHTML += `
+
+                    <div class="cart-item">
+
+                        <span class="food-name">
+                            ${item.name}
+                        </span>
+
+
+                        <span class="food-price">
+                            ₹${itemTotal}
+                        </span>
+
+
+                        <button
+                            onclick="decreaseQuantity(${item.id})">
+
+                            −
+
+                        </button>
+
+
+                        <button
+                            onclick="increaseQuantity(${item.id})">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            const discount =
+                subtotal * 10 / 100;
+
+
+            const total =
+                subtotal - discount;
+
+
+            order.innerHTML =
+                orderHTML;
+
+
+            document.getElementById("total").innerHTML =
+
+                "Subtotal : ₹" +
+                subtotal.toFixed(2) +
+
+                "<br>Discount : ₹" +
+                discount.toFixed(2) +
+
+                "<br><b>Total : ₹" +
+                total.toFixed(2) +
+                "</b>";
+        }
+
+
+        function clearOrder()
+        {
+            cart = [];
+
+
+            document.getElementById("order").innerHTML =
+                "No Items";
+
+
+            document.getElementById("total").innerHTML =
+                "Total : ₹0";
+
+
+            document.getElementById("cart")
+                .classList.remove("show");
+        }
+
+
+        async function placeOrder()
+        {
+            if(cart.length === 0)
+            {
+                alert(
+                    "Please add items to cart first!"
+                );
+
+                return;
+            }
+
+
+            const items =
+                cart.map(item => {
+
+                    return {
+
+                        id: item.id,
+
+                        quantity: item.quantity
+
+                    };
+
+                });
+
+
+            try
+            {
+                const response =
+                    await fetch(
+
+                        "/api/orders",
+
+                        {
+
+                            method: "POST",
+
+                            headers:
+                            {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                items: items
+
+                            })
+
+                        }
+
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if(response.ok)
+                {
+                    alert(
+
+                        "Order Placed Successfully!\n" +
+
+                        "Order ID: " +
+                        data.order.id +
+
+                        "\nTotal: ₹" +
+                        data.order.total
+
+                    );
+
+
+                    clearOrder();
+                }
+                else
+                {
+                    alert(data.message);
+                }
+
+            }
+            catch(error)
+            {
+                console.error(
+                    "Server Error:",
+                    error
+                );
+
+
+                alert(
+                    "Unable to connect to Express server."
+                );
+            }
+        }
+
+
+        function changeStyle()
+        {
+            const text =
+                document.getElementById(
+                    "message"
+                );
+
+
+            text.style.fontSize =
+                "28px";
+
+
+            text.style.fontStyle =
+                "italic";
+
+
+            text.style.fontWeight =
+                "bold";
+
+
+            text.style.textDecoration =
+                "underline";
+        }
+
+
+        function toggleText()
+        {
+            const text =
+                document.getElementById(
+                    "message"
+                );
+
+
+            if(text.style.display === "none")
+            {
+                text.style.display =
+                    "block";
+            }
+            else
+            {
+                text.style.display =
+                    "none";
+            }
+        }
+
+
+        function zoomIn(item)
+        {
+            item.style.transform =
+                "scale(1.1)";
+
+
+            item.style.boxShadow =
+                "0px 15px 30px rgba(0,0,0,0.3)";
+
+
+            item.style.zIndex =
+                "100";
+        }
+
+
+        function zoomOut(item)
+        {
+            item.style.transform =
+                "scale(1)";
+
+
+            item.style.boxShadow =
+                "none";
+
+
+            item.style.zIndex =
+                "1";
+        }
+
+
+        async function loadFoods()
+{
+    try
+    {
+        const response = await fetch(API_URL, {
+            cache: "no-store"
+        });
+
+        const foods = await response.json();
+
+        const requiredFoods = foods.filter(food =>
+            food.id === 1 ||
+            food.id === 2 ||
+            food.id === 3
+        );
+
+        displayFoods(requiredFoods);
+    }
+    catch(error)
+    {
+        console.error(
+            "Unable to load foods:",
+            error
+        );
+    }
+}
+
+
+        function displayFoods(foods)
+        {
+            const menu =
+                document.getElementById(
+                    "foodMenu"
+                );
+
+
+            menu.innerHTML = "";
+
+
+            foods.forEach(food => {
+
+                let image = "";
+
+
+                if(food.id === 1)
+                {
+                    image =
+                        "burger.jpg";
+                }
+                else if(food.id === 2)
+                {
+                    image =
+                        "dosa.jpg";
+                }
+                else if(food.id === 3)
+                {
+                    image =
+                        "fries.jpg";
+                }
+
+
+                menu.innerHTML += `
+
+                    <div
+                        class="item"
+
+                        onmouseover="zoomIn(this)"
+
+                        onmouseout="zoomOut(this)">
+
+                        <img
+                            src="${image}"
+
+                            alt="${food.name}">
+
+
+                        <h3>
+                            ${food.name}
+                        </h3>
+
+
+                        <p>
+
+                            ${
+                                food.id === 1
+
+                                ? "Fresh Veg Burger"
+
+                                : food.id === 2
+
+                                ? "Masala Dosa"
+
+                                : "Crispy Fries"
+
+                            }
+
+                        </p>
+
+
+                        <p>
+                            ₹${food.price}
+                        </p>
+
+
+                        <button
+                            onclick="buyItem(${food.id})">
+
+                            Buy Now
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            });
+        }
+
+
+        window.onload = function()
+        {
+            loadFoods();
+
+            displayCart();
+        };
+
+    </script>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>
+        Food Delivery
+    </h1>
+
+
+    <div class="navigation">
+
+        <ul>
+
+            <li>
+                <a href="#home">
+                    Home
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#menu">
+                    Menu
+                </a>
+            </li>
+
+
+            <li>
+                <a href="admin.html">
+                    Food Management
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#footer">
+                    Contact
+                </a>
+            </li>
+
+        </ul>
+
+
+        <button
+            class="signup-btn"
+
+            onclick="location.href='signup.html'">
+
+            Sign Up
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<div
+    id="home"
+    class="content">
+
+    <h2>
+        Welcome to Food Delivery
+    </h2>
+
+
+    <p>
+        Fresh and delicious food delivered to your home.
+    </p>
+
+
+    <p>
+        We provide tasty food at affordable prices.
+    </p>
+
+
+    <p
+        id="message"
+        onclick="changeStyle()">
+
+        Welcome to our Food Delivery Website!
+
+    </p>
+
+
+    <button onclick="toggleText()">
+
+        Hide / Show
+
+    </button>
+
+
+    <div class="highlight">
+
+
+        <div class="box">
+
+            <h3>
+                6+
+            </h3>
+
+            <p>
+                Food Items
+            </p>
+
+        </div>
+
+
+        <div class="box">
+
+            <h3>
+                20%
+            </h3>
+
+            <p>
+                Maximum Discount
+            </p>
+
+        </div>
+
+
+        <div class="box">
+
+            <h3>
+                30 Min
+            </h3>
+
+            <p>
+                Fast Delivery
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    id="menu"
+    class="content">
+
+
+    <h2>
+        Menu
+    </h2>
+
+
+    <div class="menu-layout">
+
+
+        <div class="food-section">
+
+            <div
+                class="food-grid"
+                id="foodMenu">
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="bill"
+            id="cart">
+
+
+            <h2>
+                Your Order
+            </h2>
+
+
+            <div id="order">
+
+                No Items
+
+            </div>
+
+
+            <h3 id="total">
+
+                Total : ₹0
+
+            </h3>
+
+
+            <button
+                onclick="clearOrder()">
+
+                Clear
+
+            </button>
+
+
+            <button
+                onclick="placeOrder()">
+
+                Place Order
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="footer">
+
+    <h2>
+        Food Delivery Website
+    </h2>
+
+
+    <h3>
+        Contact Us
+    </h3>
+
+
+    <h3>
+        Email: food@gmail.com
+    </h3>
+
+
+    <h3>
+        Phone: 9322472847
+    </h3>
+
+</div>
+
+
+</body>
+
+</html>
