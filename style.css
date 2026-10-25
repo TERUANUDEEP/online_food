@@ -1,284 +1,561 @@
+
+/* ========================================
+   FOOD DELIVERY WEBSITE - MAIN PAGE
+   Responsive CSS for index.html
+======================================== */
+
+/* ===== GLOBAL ===== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 20px;
+}
+
 body {
     font-family: 'Times New Roman', Times, serif;
-    background: #fff;
+    background: #ffffff;
+    color: #302416;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    line-height: 1.5;
 }
 
-/* ===== Header ======= */
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    transition: background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid #704000;
+    outline-offset: 3px;
+}
+
+a {
+    transition: color 0.2s ease;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* ===== HEADER / NAVBAR ===== */
+
 .header {
-    background: orange;
-    color: #fff;
-    padding: 20px 5%;
+    width: 100%;
+    background: linear-gradient(110deg, #ff9800, #ffad19);
+    color: white;
+    padding: 18px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; 
-    gap: 15px;
+    flex-wrap: wrap;
+    gap: 14px 30px;
+    box-shadow: 0 3px 12px rgba(100, 60, 0, 0.12);
+}
+
+.logo h1,
+.header h1 {
+    color: white;
+    font-size: clamp(25px, 3vw, 35px);
+    line-height: 1.2;
+}
+
+/* Supports the existing navigation class */
+.navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
 }
 
 .navigation ul {
     list-style: none;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+}
+
+.navigation li {
+    list-style: none;
 }
 
 .navigation a {
+    display: inline-block;
     text-decoration: none;
-    color: #fff;
+    color: white;
+    font-size: 16px;
     font-weight: bold;
-    transition: opacity 0.2s ease;
+    padding: 7px 0;
+    border-bottom: 2px solid transparent;
 }
 
 .navigation a:hover {
-    opacity: 0.8;
+    color: #593000;
+    border-bottom-color: #593000;
 }
+
+/* Also supports direct navigation links */
+.header nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ===== SIGN UP / LOGOUT ===== */
+
+#authArea {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.signup-btn,
+#authArea button {
+    display: inline-block;
+    padding: 9px 20px;
+    border: 2px solid white;
+    border-radius: 24px;
+    background: white;
+    color: #bd6800;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.signup-btn:hover,
+#authArea button:hover {
+    background: #713b00;
+    border-color: #713b00;
+    color: white;
+    transform: translateY(-2px);
+}
+
+#authArea span {
+    color: white;
+    font-weight: bold;
+}
+
+/* ===== GENERAL SECTIONS ===== */
 
 .content {
-    padding: 40px 5%;
-}
-
-#home {
-    background: #ffe8b3;
-    text-align: center;
+    width: 100%;
+    padding: 38px 5%;
 }
 
 .content h2 {
     margin-bottom: 20px;
+    font-size: clamp(23px, 2.5vw, 30px);
 }
 
-/* === Highlights === */
+.content p {
+    line-height: 1.7;
+}
+
+/* ===== HOME / WELCOME SECTION ===== */
+
+#home {
+    background: linear-gradient(135deg, #fff0c9, #ffe3a2);
+    text-align: center;
+    padding: 38px 5%;
+}
+
+#home h2 {
+    margin-bottom: 14px;
+}
+
+#home p {
+    margin-bottom: 4px;
+}
+
+#home button {
+    padding: 9px 18px;
+    margin-top: 10px;
+    background: white;
+    color: #a85a00;
+    border: 1px solid #e4a13e;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+#home button:hover {
+    background: #fff5df;
+}
+
+/* ===== HIGHLIGHT BOXES ===== */
+
 .highlight {
     display: flex;
     justify-content: center;
+    align-items: stretch;
     flex-wrap: wrap;
     gap: 20px;
-    margin-top: 25px;
+    margin-top: 28px;
 }
 
 .box {
-    
     flex: 1 1 200px;
     max-width: 320px;
-    padding: 20px;
-    border: 1px solid #000;
-    background: lightyellow;
+    padding: 22px 18px;
+    border: 1px solid #f1d18f;
+    border-radius: 10px;
+    background: #fffdf0;
     text-align: center;
+    box-shadow: 0 4px 12px rgba(100, 60, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(100, 60, 0, 0.12);
 }
 
 .box h3 {
-    color: orange;
+    color: #ef8c00;
     margin-bottom: 8px;
+    font-size: 23px;
 }
 
-/* ====== Menu Grid  ====== */
+/* ===== MENU GRID ===== */
+
 .menu {
     display: grid;
-    
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(100%, 250px), 1fr)
+    );
+    align-items: stretch;
+    gap: 24px;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1250px;
     margin: 0 auto;
 }
 
 .item {
+    min-width: 0;
     width: 100%;
-    border: 1px solid orange;
-    background: #fffde7;
+    border: 1px solid #f0a21a;
+    border-radius: 12px;
+    background: #fffdf0;
     text-align: center;
-    padding: 15px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 4px 12px rgba(90, 55, 0, 0.06);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
-    
+.item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(90, 55, 0, 0.13);
 }
 
 .item img {
+    display: block;
     width: 100%;
-    height: 180px;
+    height: 185px;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
-.item h3,
+.item h3 {
+    font-size: 21px;
+    margin-top: 12px;
+    margin-bottom: 4px;
+}
+
 .item p {
-    margin-top: 10px;
+    margin-top: 7px;
+    margin-bottom: 5px;
 }
 
-/* ======= Footer ======== */
-#footer {
+/* ===== FOOD / BUY BUTTONS ===== */
+
+.item button {
+    width: 100%;
     margin-top: auto;
-    background: orange;
-    color: #fff;
+    padding: 11px 14px;
+    background: #ed8b00;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+.item button:hover {
+    background: #c97000;
+    box-shadow: 0 4px 10px rgba(120, 65, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+/* ===== CART / BILL ===== */
+
+.bill {
+    width: 100%;
+    max-width: 420px;
+    margin: 28px auto;
+    padding: 22px;
+    border: 1px solid #f0a21a;
+    border-radius: 12px;
+    background: #fff8df;
     text-align: center;
-    padding: 25px 20px;
+    box-shadow: 0 5px 16px rgba(100, 60, 0, 0.08);
+}
+
+.bill h2 {
+    margin-bottom: 16px;
+}
+
+.bill p {
+    margin: 8px 0;
+}
+
+.bill button {
+    margin: 8px 4px 0;
+    padding: 10px 17px;
+    background: #f39800;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+.bill button:hover {
+    background: #c97000;
+    transform: translateY(-1px);
+}
+
+/* ===== INPUTS INSIDE MAIN PAGE ===== */
+
+.content input,
+.content select,
+.content textarea,
+.bill input,
+.bill select,
+.bill textarea {
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #dfc9a2;
+    border-radius: 6px;
+}
+
+.content input:focus,
+.content select:focus,
+.content textarea:focus {
+    border-color: #ed8b00;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(237, 139, 0, 0.13);
+}
+
+/* ===== FOOTER ===== */
+
+#footer {
+    width: 100%;
+    margin-top: auto;
+    background: linear-gradient(110deg, #ff9800, #ffad19);
+    color: white;
+    text-align: center;
+    padding: 26px 20px;
 }
 
 #footer h2 {
     margin-bottom: 10px;
+    font-size: 25px;
 }
 
 #footer h3 {
-    color: #000;
+    color: #492800;
+    margin-top: 8px;
 }
 
-/* === Device Breakpoints === */
+#footer p {
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
 
+/* ===== TABLETS ===== */
 
 @media (max-width: 1024px) {
+    .header {
+        padding: 18px 4%;
+        gap: 16px 22px;
+    }
+
+    .navigation ul,
+    .header nav {
+        gap: 8px 18px;
+    }
+
     .content {
         padding: 30px 4%;
     }
+
+    .menu {
+        gap: 18px;
+    }
+
+    .item img {
+        height: 170px;
+    }
 }
 
+/* ===== MOBILE / SMALL TABLETS ===== */
 
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
+        justify-content: center;
         text-align: center;
+        padding: 20px 16px;
+        gap: 14px;
     }
 
-    .navigation ul {
-        gap: 15px;
-    }
-}
-
-
-@media (max-width: 480px) {
-    .header h1 {
-        font-size: 28px;
-    }
-
-    .navigation ul {
-        flex-direction: column;
+    .navigation {
+        align-items: center;
         width: 100%;
-        gap: 10px;
+    }
+
+    .navigation ul,
+    .header nav {
+        justify-content: center;
+        gap: 8px 20px;
+    }
+
+    #authArea {
+        justify-content: center;
     }
 
     .content {
-        padding: 20px 3%;
+        padding: 26px 4%;
     }
 
-    .box, 
+    #home {
+        padding: 30px 5%;
+    }
+
+    .highlight {
+        gap: 14px;
+    }
+
+    .box {
+        flex: 1 1 180px;
+    }
+
+    .menu {
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(100%, 220px), 1fr)
+        );
+        gap: 16px;
+    }
+
+    .item img {
+        height: 175px;
+    }
+}
+
+/* ===== SMALL PHONES ===== */
+
+@media (max-width: 480px) {
+    .header {
+        padding: 17px 12px;
+    }
+
+    .logo h1,
+    .header h1 {
+        font-size: 27px;
+    }
+
+    .navigation ul,
+    .header nav {
+        gap: 7px 14px;
+    }
+
+    .navigation a,
+    .header nav a {
+        font-size: 14px;
+    }
+
+    .signup-btn,
+    #authArea button {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    .content {
+        padding: 22px 13px;
+    }
+
+    .content h2 {
+        font-size: 24px;
+    }
+
+    .highlight {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .box {
+        width: 100%;
+        max-width: none;
+    }
+
+    .menu {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
     .item {
-        max-width: 100%; 
+        padding: 12px;
     }
-}
-.bill{
-    width:300px;
-    margin:30px auto;
-    padding:20px;
-    border:2px solid orange;
-    background:#fff8dc;
-    text-align:center;
-}
 
-.bill button{
-    margin:10px;
-    padding:10px 15px;
-    background:orange;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
+    .item img {
+        height: 210px;
+    }
 
-.item button{
-    margin-top:10px;
-    padding:8px 15px;
-    background:green;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
+    .bill {
+        padding: 17px 12px;
+    }
 
-/* ===== SIGN UP PAGE ===== */
+    .bill button {
+        margin: 6px 3px;
+        padding: 9px 12px;
+    }
 
-.signup{
-    width:220px;          /* Small form */
-    max-width:90%;
-    margin:20px auto;
-    padding:12px;
-    background:#fff8dc;
-    border:2px solid orange;
-    border-radius:5px;
-}
+    #footer {
+        padding: 23px 14px;
+    }
 
-.signup h2{
-    font-size:18px;
-    margin-bottom:10px;
-    text-align:center;
-    color:orange;
-}
-
-.signup td{
-    padding:3px 0;
-}
-
-.signup label{
-    font-size:11px;
-    font-weight:bold;
-}
-
-.signup input,
-.signup select,
-.signup textarea{
-    width:100%;
-    padding:4px;
-    font-size:11px;
-}
-
-.signup button,
-.signup input[type="reset"]{
-    width:100%;
-    padding:5px;
-    margin-top:5px;
-    font-size:11px;
-}
-
-.signup span{
-    font-size:9px;
-}
-
-.signup p{
-    font-size:10px;
-    text-align:center;
-}
-@media (max-width:480px){
-
-.signup{
-    width:180px;
-    padding:10px;
-}
-
-.signup h2{
-    font-size:16px;
-}
-
-.signup label{
-    font-size:10px;
-}
-
-.signup input,
-.signup select,
-.signup textarea{
-    padding:3px;
-    font-size:10px;
-}
-
-.signup button,
-.signup input[type="reset"]{
-    padding:4px;
-    font-size:10px;
-}
-
+    #footer h2 {
+        font-size: 22px;
+    }
 }

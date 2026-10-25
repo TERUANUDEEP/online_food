@@ -462,6 +462,16 @@
 
         async function placeOrder()
         {
+
+            
+const token = localStorage.getItem("authToken");
+
+if (!token) {
+    alert("Please register or log in first!");
+    window.location.href = "signup.html";
+    return;
+}
+
             if(cart.length === 0)
             {
                 alert(
@@ -497,11 +507,12 @@
 
                             method: "POST",
 
-                            headers:
-                            {
-                                "Content-Type":
-                                    "application/json"
-                            },
+                            
+headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + (localStorage.getItem("authToken") || "")
+},
+
 
                             body: JSON.stringify({
 
@@ -750,13 +761,61 @@
             });
         }
 
+        
 
-        window.onload = function()
-        {
-            loadFoods();
+function updateAuthArea() {
+    const area = document.getElementById("authArea");
+    if (!area) return;
 
-            displayCart();
+    const token = localStorage.getItem("authToken");
+    let user = null;
+
+    try {
+        user = JSON.parse(localStorage.getItem("currentUser") || "null");
+    } catch {
+        user = null;
+    }
+
+    area.replaceChildren();
+
+    if (token && user && user.name) {
+        const greeting = document.createElement("span");
+        greeting.textContent = "Hi, " + user.name + "! ";
+        greeting.style.color = "white";
+        greeting.style.fontWeight = "bold";
+
+        const logout = document.createElement("button");
+        logout.className = "signup-btn";
+        logout.textContent = "Logout";
+
+        logout.onclick = () => {
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("currentUser");
+            updateAuthArea();
         };
+
+        area.append(greeting, logout);
+    } else {
+        localStorage.removeItem("currentUser");
+
+        const signup = document.createElement("button");
+        signup.className = "signup-btn";
+        signup.textContent = "Sign Up";
+        signup.onclick = () => {
+            window.location.href = "signup.html";
+        };
+
+        area.appendChild(signup);
+    }
+}
+
+
+
+window.onload = function () {
+    loadFoods();
+    displayCart();
+    updateAuthArea();
+};
 
     </script>
 
@@ -807,14 +866,12 @@
         </ul>
 
 
-        <button
-            class="signup-btn"
-
-            onclick="location.href='signup.html'">
-
-            Sign Up
-
-        </button>
+        <div id="authArea">
+    <button class="signup-btn"
+        onclick="location.href='signup.html'">
+        Sign Up
+    </button>
+</div>
 
     </div>
 

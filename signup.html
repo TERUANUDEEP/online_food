@@ -1,191 +1,462 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Food Delivery - Sign Up</title>
-<link rel="stylesheet" href="style.css">
-<script>
-function nameValidate()
-{
-    let name=document.f1.name.value;
-    let re=/^[A-Za-z ]+$/;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Food Delivery</title>
+    <link rel="stylesheet" href="style.css">
 
-    if(!re.test(name) || name.length<3)
-        document.getElementById("nmsg").innerHTML="Enter a valid name";
-    else
-        document.getElementById("nmsg").innerHTML="";
-}
-function dobValidate()
-{
-    if(document.f1.dob.value=="")
-        document.getElementById("dmsg").innerHTML="Select Date of Birth";
-    else
-        document.getElementById("dmsg").innerHTML="";
-}
-function genderValidate()
-{
-    if(document.f1.gender.value=="")
-        document.getElementById("gmsg").innerHTML="Select Gender";
-    else
-        document.getElementById("gmsg").innerHTML="";
-}
-function addressValidate()
-{
-    if(document.f1.address.value.length<10)
-        document.getElementById("amsg").innerHTML="Enter complete address";
-    else
-        document.getElementById("amsg").innerHTML="";
-}
-function emailValidate()
-{
-    let e=document.f1.email.value;
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    let at=e.indexOf("@");
-    let dot=e.lastIndexOf(".");
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #fff3d6, #ffe0a3);
+            color: #332719;
+        }
 
-    if(at<1 || dot<at+2 || dot+2>=e.length)
-        document.getElementById("emsg").innerHTML="Invalid Email";
-    else
-        document.getElementById("emsg").innerHTML="";
-}
-function mobileValidate()
-{
-    let m=document.f1.mobile.value;
-    let re=/^[6-9][0-9]{9}$/;
-    if(!re.test(m))
-        document.getElementById("mmsg").innerHTML="Invalid Mobile Number";
-    else
-        document.getElementById("mmsg").innerHTML="";
-}
-function passwordValidate()
-{
-    let p=document.f1.pwd.value;
+        .header {
+            width: 100%;
+            background: linear-gradient(90deg, #ff9800, #ffad16);
+            padding: 20px 7%;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+        }
 
-    if(p.length<6)
-        document.getElementById("pmsg").innerHTML="Password must contain at least 6 characters";
-    else
-        document.getElementById("pmsg").innerHTML="";
-}
-function confirmPasswordValidate()
-{
-    if(document.f1.cpwd.value!=document.f1.pwd.value)
-        document.getElementById("cpmsg").innerHTML="Passwords do not match";
-    else
-        document.getElementById("cpmsg").innerHTML="";
-}
-function validate()
-{
-    nameValidate();
-    dobValidate();
-    genderValidate();
-    addressValidate();
-    emailValidate();
-    mobileValidate();
-    passwordValidate();
-    confirmPasswordValidate();
-    if(
-    document.getElementById("nmsg").innerHTML!="" ||
-    document.getElementById("dmsg").innerHTML!="" ||
-    document.getElementById("gmsg").innerHTML!="" ||
-    document.getElementById("amsg").innerHTML!="" ||
-    document.getElementById("emsg").innerHTML!="" ||
-    document.getElementById("mmsg").innerHTML!="" ||
-    document.getElementById("pmsg").innerHTML!="" ||
-    document.getElementById("cpmsg").innerHTML!="")
-    {
-        alert("Please enter valid details.");
-        return false;
-    }
-    alert("Registration Successful!");
-    window.location="index.html";
-}
-</script>
+        .header h1 {
+            color: white;
+            font-size: clamp(24px, 3vw, 32px);
+            letter-spacing: 0.3px;
+        }
+
+        .page-container {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 35px 16px;
+        }
+
+        .signup-card {
+            width: 100%;
+            max-width: 530px;
+            background: #fffdf7;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(112, 67, 0, 0.16);
+            border: 1px solid rgba(255, 152, 0, 0.25);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #ff9800, #ffb52e);
+            text-align: center;
+            padding: 25px 20px;
+        }
+
+        .card-header h2 {
+            color: white;
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .card-header p {
+            color: #fffaf0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .signup-form {
+            padding: 28px 32px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #51391e;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            display: block;
+            width: 100%;
+            padding: 12px 13px;
+            font: inherit;
+            font-size: 14px;
+            color: #332719;
+            background: #fff;
+            border: 1px solid #e5d5bd;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #ff9800;
+            box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.15);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .password-note {
+            display: block;
+            color: #806e58;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .register-btn,
+        .reset-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .register-btn {
+            color: white;
+            background: #f39200;
+            box-shadow: 0 4px 10px rgba(243, 146, 0, 0.2);
+            margin-top: 5px;
+        }
+
+        .register-btn:hover {
+            background: #df8000;
+            transform: translateY(-1px);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .reset-btn {
+            margin-top: 10px;
+            color: #704b1e;
+            background: #fff0d5;
+            border: 1px solid #f2d4a4;
+        }
+
+        .reset-btn:hover {
+            background: #ffe4b5;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #d87900;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .form-message {
+            display: none;
+            margin-bottom: 16px;
+            padding: 11px;
+            border-radius: 7px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .form-message.error {
+            display: block;
+            color: #a32222;
+            background: #fff0f0;
+            border: 1px solid #f3c3c3;
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 17px 20px;
+            }
+
+            .page-container {
+                padding: 22px 12px;
+                align-items: flex-start;
+            }
+
+            .signup-card {
+                border-radius: 13px;
+            }
+
+            .card-header {
+                padding: 22px 14px;
+            }
+
+            .card-header h2 {
+                font-size: 24px;
+            }
+
+            .signup-form {
+                padding: 23px 18px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header class="header">
-<div class="logo">
-<h1>Food Delivery</h1>
-</div>
-</header>
-<div class="signup">
-<h2 align="center">Sign Up</h2>
-<form name="f1">
-<table>
-<tr>
-<td>Name</td>
-<td>
-<input type="text" name="name" onblur="nameValidate()">
-<br><span id="nmsg"></span>
-</td>
-</tr>
-<tr>
-<td>Date of Birth</td>
-<td>
-<input type="date" name="dob" onblur="dobValidate()">
-<br><span id="dmsg"></span>
-</td>
-</tr>
-<tr>
-<td>Gender</td>
-<td>
-<select name="gender" onblur="genderValidate()">
-<option value="">Select Gender</option>
-<option>Male</option>
-<option>Female</option>
-<option>Other</option>
-</select>
-<br><span id="gmsg"></span>
-</td>
-</tr>
-<tr>
-<td>Postal Address</td>
-<td>
-<textarea name="address" rows="3" cols="22" onblur="addressValidate()"></textarea>
-<br><span id="amsg"></span>
-</td>
-</tr>
-<tr>
-<td>Email</td>
-<td>
-<input type="text" name="email" onblur="emailValidate()">
-<br><span id="emsg"></span>
-</td>
-</tr>
-<tr>
-<td>Phone Number</td>
-<td>
-<input type="text" name="mobile" maxlength="10" onblur="mobileValidate()">
-<br><span id="mmsg"></span>
-</td>
-</tr>
-<tr>
-<td>Password</td>
-<td>
-<input type="password" name="pwd" onblur="passwordValidate()">
-<br><span id="pmsg"></span>
-</td>
-</tr>
-<tr>
-<td>Confirm Password</td>
-<td>
-<input type="password" name="cpwd" onblur="confirmPasswordValidate()">
-<br><span id="cpmsg"></span>
-</td>
-</tr>
-<tr>
-<td colspan="2" align="center">
-<button type="button" onclick="validate()">
-Register
-</button>
-<input type="reset" value="Reset">
-</td>
-</tr>
-<tr>
-<td colspan="2" align="center">
-<a href="index.html">← Back to Home</a>
-</td>
-</tr>
-</table>
-</form>
-</div>
+
+    <header class="header">
+        <h1>Food Delivery</h1>
+    </header>
+
+    <main class="page-container">
+        <section class="signup-card">
+
+            <div class="card-header">
+                <h2>Create Your Account</h2>
+                <p>Join us and enjoy delicious food delivered to your door!</p>
+            </div>
+
+            <form class="signup-form" name="f1" id="signupForm">
+
+                <div id="formMessage" class="form-message"
+                     role="alert" aria-live="polite"></div>
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name"
+                           placeholder="Enter your full name"
+                           minlength="3" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Postal Address</label>
+                    <textarea id="address" name="address"
+                              placeholder="Enter your complete address"
+                              minlength="10" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email"
+                           placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" name="mobile"
+                           placeholder="10-digit mobile number"
+                           inputmode="numeric" maxlength="10"
+                           pattern="[6-9][0-9]{9}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pwd">Password</label>
+                    <input type="password" id="pwd" name="pwd"
+                           placeholder="Create a password"
+                           minlength="6" autocomplete="new-password"
+                           required>
+                    <span class="password-note">
+                        Use at least 6 characters.
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="cpwd">Confirm Password</label>
+                    <input type="password" id="cpwd" name="cpwd"
+                           placeholder="Re-enter your password"
+                           minlength="6" autocomplete="new-password"
+                           required>
+                </div>
+
+                <button type="submit" class="register-btn" id="registerBtn">
+                    Create Account
+                </button>
+
+                <button type="reset" class="reset-btn">
+                    Clear Form
+                </button>
+
+                <a href="index.html" class="back-link">
+                    ← Back to Food Delivery
+                </a>
+
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("signupForm");
+        const message = document.getElementById("formMessage");
+        const registerBtn = document.getElementById("registerBtn");
+
+        // Prevent selecting a future date of birth.
+        document.getElementById("dob").max =
+            new Date().toISOString().split("T")[0];
+
+        function showMessage(text) {
+            message.textContent = text;
+            message.className = "form-message error";
+        }
+
+        form.addEventListener("reset", () => {
+            message.textContent = "";
+            message.className = "form-message";
+        });
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const name = form.name.value.trim();
+            const dob = form.dob.value;
+            const gender = form.gender.value;
+            const address = form.address.value.trim();
+            const email = form.email.value.trim();
+            const mobile = form.mobile.value.trim();
+            const password = form.pwd.value;
+            const confirmPassword = form.cpwd.value;
+
+            message.textContent = "";
+            message.className = "form-message";
+
+            if (!/^[A-Za-z ]{3,}$/.test(name)) {
+                showMessage("Please enter a valid name using letters and spaces.");
+                return;
+            }
+
+            if (!dob || dob > new Date().toISOString().split("T")[0]) {
+                showMessage("Please select a valid date of birth.");
+                return;
+            }
+
+            if (!gender) {
+                showMessage("Please select your gender.");
+                return;
+            }
+
+            if (address.length < 10) {
+                showMessage("Please enter your complete address.");
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showMessage("Please enter a valid email address.");
+                return;
+            }
+
+            if (!/^[6-9][0-9]{9}$/.test(mobile)) {
+                showMessage("Please enter a valid 10-digit Indian mobile number.");
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage("Password must contain at least 6 characters.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showMessage("Your passwords do not match.");
+                return;
+            }
+
+            registerBtn.disabled = true;
+            registerBtn.textContent = "Creating Account...";
+
+            try {
+                const response = await fetch("/api/users/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name,
+                        dob,
+                        gender,
+                        address,
+                        email,
+                        mobile,
+                        password
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        result.message || "Registration failed."
+                    );
+                }
+
+                if (!result.token || !result.user || !result.user.name) {
+                    throw new Error(
+                        "Registration succeeded, but the server did not return a login token. Please contact support."
+                    );
+                }
+
+                localStorage.setItem("authToken", result.token);
+                localStorage.setItem(
+                    "currentUser",
+                    JSON.stringify(result.user)
+                );
+
+                window.location.href = "index.html";
+
+            } catch (error) {
+                showMessage(
+                    error.message || "Unable to connect to the server."
+                );
+            } finally {
+                registerBtn.disabled = false;
+                registerBtn.textContent = "Create Account";
+            }
+        });
+    </script>
+
 </body>
 </html>
